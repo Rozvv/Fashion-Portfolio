@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mara Leon — Fashion Content Creator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Syne:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --cream: #f5f0e8; --ink: #1a1714; --warm-gray: #9a9088;
+      --accent: #c8a96e; --soft: #e8e0d0; --bio-color: #5a534a;
+    }
+    [data-theme="dark"] {
+      --cream: #111010; --ink: #f0ebe2; --warm-gray: #7a7268;
+      --accent: #c8a96e; --soft: #252220; --bio-color: #a09888;
+    }
+    html { scroll-behavior: smooth; }
+    body { background: var(--cream); color: var(--ink); font-family: 'Syne', sans-serif; font-size: 14px; letter-spacing: 0.02em; overflow-x: hidden; transition: background 0.4s ease, color 0.4s ease; }
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; justify-content: space-between; align-items: center; padding: 28px 48px; background: var(--cream); transition: background 0.4s ease; }
+    .nav-logo { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 18px; letter-spacing: 0.08em; color: var(--ink); text-decoration: none; transition: color 0.4s; }
+    .nav-right { display: flex; align-items: center; gap: 28px; }
+    .nav-links { display: flex; gap: 36px; list-style: none; }
+    .nav-links a { text-decoration: none; color: var(--warm-gray); font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; transition: color 0.3s; }
+    .nav-links a:hover { color: var(--ink); }
+    .theme-toggle { background: none; border: 1px solid var(--warm-gray); cursor: pointer; width: 40px; height: 22px; border-radius: 11px; position: relative; transition: border-color 0.3s; flex-shrink: 0; padding: 0; }
+    .theme-toggle::after { content: ''; position: absolute; top: 3px; left: 3px; width: 14px; height: 14px; border-radius: 50%; background: var(--warm-gray); transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.3s; }
+    [data-theme="dark"] .theme-toggle::after { transform: translateX(18px); background: var(--accent); }
+    .hero { min-height: 100vh; display: grid; grid-template-columns: 1fr 1fr; align-items: center; padding: 120px 48px 80px; gap: 80px; }
+    .hero-left { display: flex; flex-direction: column; gap: 32px; animation: fadeUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) both; }
+    .hero-label { font-size: 10px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--accent); }
+    .hero-name { font-family: 'Cormorant Garamond', serif; font-size: clamp(56px, 7vw, 96px); font-weight: 300; line-height: 1.0; color: var(--ink); transition: color 0.4s; }
+    .hero-name em { font-style: italic; color: var(--warm-gray); }
+    .hero-bio { font-family: 'Cormorant Garamond', serif; font-size: 19px; font-weight: 300; line-height: 1.7; color: var(--bio-color); max-width: 420px; transition: color 0.4s; }
+    .hero-cta { display: flex; gap: 20px; align-items: center; margin-top: 8px; }
+    .btn-primary { display: inline-block; padding: 14px 32px; background: var(--ink); color: var(--cream); text-decoration: none; font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; transition: background 0.3s, color 0.3s; }
+    .btn-primary:hover { background: var(--accent); color: var(--ink); }
+    .btn-ghost { font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--warm-gray); text-decoration: none; border-bottom: 1px solid transparent; transition: color 0.3s, border-color 0.3s; }
+    .btn-ghost:hover { color: var(--ink); border-color: var(--ink); }
+    .hero-right { display: flex; justify-content: center; animation: fadeIn 1.6s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both; }
+    .avatar-wrapper { position: relative; width: 380px; height: 480px; }
+    .avatar-frame { position: absolute; inset: 0; border: 1px solid var(--soft); transition: border-color 0.4s; }
+    .avatar-frame::before { content: ''; position: absolute; top: 16px; left: 16px; right: -16px; bottom: -16px; border: 1px solid var(--accent); opacity: 0.4; z-index: -1; }
+    .avatar-placeholder { width: 100%; height: 100%; background: linear-gradient(160deg, #ddd5c5 0%, #c8bfaf 50%, #b8a898 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; transition: background 0.4s; }
+    [data-theme="dark"] .avatar-placeholder { background: linear-gradient(160deg, #2a2520 0%, #1e1b18 50%, #151210 100%); }
+    .avatar-placeholder svg { width: 80px; height: 80px; opacity: 0.3; }
+    .avatar-placeholder span { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 13px; color: #8a7a6a; letter-spacing: 0.1em; }
+    .avatar-tag { position: absolute; bottom: -20px; right: -20px; background: var(--ink); color: var(--cream); padding: 10px 20px; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; transition: background 0.4s, color 0.4s; }
+    .divider { height: 1px; background: var(--soft); margin: 0 48px; transition: background 0.4s; }
+    section { padding: 100px 48px; }
+    .section-header { display: flex; align-items: baseline; gap: 20px; margin-bottom: 60px; }
+    .section-num { font-size: 10px; letter-spacing: 0.2em; color: var(--accent); }
+    .section-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(32px, 4vw, 52px); font-weight: 300; color: var(--ink); transition: color 0.4s; }
+    .section-line { flex: 1; height: 1px; background: var(--soft); margin-bottom: 4px; transition: background 0.4s; }
+    .projects-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; }
+    .project-card { position: relative; overflow: hidden; aspect-ratio: 3/4; cursor: pointer; text-decoration: none; display: block; }
+    .project-bg { width: 100%; height: 100%; transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
+    .project-card:hover .project-bg { transform: scale(1.04); }
+    .project-bg-1 { background: linear-gradient(145deg, #d4c5b2, #b8a898, #9a8878); }
+    .project-bg-2 { background: linear-gradient(145deg, #c8bfaf, #a89888, #887868); }
+    .project-bg-3 { background: linear-gradient(160deg, #e0d8cc, #c8bfaf, #b0a090); }
+    .project-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(26,23,20,0.85) 0%, transparent 55%); display: flex; flex-direction: column; justify-content: flex-end; padding: 28px; }
+    .project-tag { font-size: 9px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent); margin-bottom: 8px; }
+    .project-name { font-family: 'Cormorant Garamond', serif; font-size: 24px; font-weight: 300; color: #f5f0e8; line-height: 1.2; margin-bottom: 8px; }
+    .project-desc { font-size: 11px; color: rgba(245,240,232,0.65); line-height: 1.6; letter-spacing: 0.03em; }
+    .project-arrow { position: absolute; top: 24px; right: 24px; width: 36px; height: 36px; border: 1px solid rgba(245,240,232,0.3); display: flex; align-items: center; justify-content: center; opacity: 0; transform: translateY(6px); transition: opacity 0.3s, transform 0.3s; color: #f5f0e8; font-size: 16px; }
+    .project-card:hover .project-arrow { opacity: 1; transform: translateY(0); }
+    .contact-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; padding: 100px 48px; }
+    .contact-left h2 { font-family: 'Cormorant Garamond', serif; font-size: clamp(36px, 4vw, 60px); font-weight: 300; line-height: 1.1; margin-bottom: 28px; color: var(--ink); transition: color 0.4s; }
+    .contact-left h2 em { font-style: italic; color: var(--warm-gray); }
+    .contact-left p { font-family: 'Cormorant Garamond', serif; font-size: 17px; font-weight: 300; color: var(--bio-color); line-height: 1.8; margin-bottom: 40px; transition: color 0.4s; }
+    .socials { display: flex; flex-direction: column; gap: 16px; }
+    .social-link { display: flex; align-items: center; gap: 14px; text-decoration: none; color: var(--warm-gray); font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; transition: color 0.3s; }
+    .social-link:hover { color: var(--ink); }
+    .social-link span { width: 32px; height: 1px; background: currentColor; flex-shrink: 0; transition: width 0.3s; }
+    .social-link:hover span { width: 48px; }
+    .contact-form { display: flex; flex-direction: column; gap: 0; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0; }
+    .field { position: relative; border-bottom: 1px solid var(--soft); border-right: 1px solid var(--soft); padding: 24px 0 10px; transition: border-color 0.4s; }
+    .form-row .field:last-child { border-right: none; }
+    .field.full { border-right: none; grid-column: 1/-1; }
+    .field label { position: absolute; top: 14px; left: 0; font-size: 9px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent); pointer-events: none; }
+    .field input, .field textarea, .field select { width: 100%; background: transparent; border: none; outline: none; font-family: 'Cormorant Garamond', serif; font-size: 17px; font-weight: 300; color: var(--ink); padding: 4px 0 4px; resize: none; -webkit-appearance: none; transition: color 0.4s; }
+    .field textarea { min-height: 100px; }
+    .field input::placeholder, .field textarea::placeholder { color: var(--warm-gray); }
+    .form-submit { margin-top: 32px; display: flex; align-items: center; gap: 20px; }
+    .form-submit button { padding: 16px 40px; background: var(--ink); color: var(--cream); border: none; font-family: 'Syne', sans-serif; font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; cursor: pointer; transition: background 0.3s, color 0.3s; }
+    .form-submit button:hover { background: var(--accent); color: var(--ink); }
+    .form-note { font-size: 11px; color: var(--warm-gray); line-height: 1.6; transition: color 0.4s; }
+    footer { padding: 32px 48px; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--soft); transition: border-color 0.4s; }
+    footer p { font-size: 10px; letter-spacing: 0.15em; color: var(--warm-gray); text-transform: uppercase; transition: color 0.4s; }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.9s cubic-bezier(0.16,1,0.3,1), transform 0.9s cubic-bezier(0.16,1,0.3,1); }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .toast { position: fixed; bottom: 40px; right: 48px; background: var(--ink); color: var(--cream); padding: 16px 28px; font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; opacity: 0; transform: translateY(10px); transition: opacity 0.4s, transform 0.4s; pointer-events: none; z-index: 999; }
+    .toast.show { opacity: 1; transform: translateY(0); }
+    @media (max-width: 900px) {
+      nav { padding: 24px 28px; }
+      .hero { grid-template-columns: 1fr; padding: 100px 28px 60px; }
+      .hero-right { order: -1; }
+      .avatar-wrapper { width: 280px; height: 360px; }
+      section { padding: 70px 28px; }
+      .divider { margin: 0 28px; }
+      .projects-grid { grid-template-columns: 1fr; }
+      .contact-wrap { grid-template-columns: 1fr; gap: 48px; padding: 70px 28px; }
+      footer { padding: 24px 28px; flex-direction: column; gap: 10px; text-align: center; }
+      .form-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="#" class="nav-logo">Mara Leon</a>
+    <div class="nav-right">
+      <ul class="nav-links">
+        <li><a href="#work">Work</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode"></button>
+    </div>
+  </nav>
+
+  <div class="hero">
+    <div class="hero-left">
+      <p class="hero-label">Fashion Content Creator — Paris and NYC</p>
+      <h1 class="hero-name">Mara<br><em>Leon</em></h1>
+      <p class="hero-bio">I create fashion content at the intersection of identity, culture, and style — from editorial shoots to immersive campaigns for brands that believe in dressing with intention.</p>
+      <div class="hero-cta">
+        <a href="#work" class="btn-primary">View Work</a>
+        <a href="#contact" class="btn-ghost">Get in touch &rarr;</a>
+      </div>
+    </div>
+    <div class="hero-right">
+      <div class="avatar-wrapper">
+        <div class="avatar-frame">
+          <div class="avatar-placeholder">
+            <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="40" cy="28" r="16" stroke="#8a7a6a" stroke-width="1.5"/>
+              <path d="M12 72c0-15.464 12.536-28 28-28s28 12.536 28 28" stroke="#8a7a6a" stroke-width="1.5"/>
+            </svg>
+            <span>your photo here</span>
+          </div>
+        </div>
+        <div class="avatar-tag">Est. 2019</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <section id="work">
+    <div class="section-header reveal">
+      <span class="section-num">01</span>
+      <h2 class="section-title">Selected Work</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="projects-grid reveal">
+      <a href="#" class="project-card">
+        <div class="project-bg project-bg-1"></div>
+        <div class="project-overlay">
+          <p class="project-tag">Editorial</p>
+          <h3 class="project-name">Nude Tones<br>FW 2024</h3>
+          <p class="project-desc">A study in restraint — earthbound palettes for a new era of dressing.</p>
+        </div>
+        <div class="project-arrow">&#8599;</div>
+      </a>
+      <a href="#" class="project-card">
+        <div class="project-bg project-bg-2"></div>
+        <div class="project-overlay">
+          <p class="project-tag">Campaign</p>
+          <h3 class="project-name">Maison Eclat<br>Brand Collab</h3>
+          <p class="project-desc">12-piece content series for the SS25 launch, 2.4M organic reach.</p>
+        </div>
+        <div class="project-arrow">&#8599;</div>
+      </a>
+      <a href="#" class="project-card">
+        <div class="project-bg project-bg-3"></div>
+        <div class="project-overlay">
+          <p class="project-tag">Series</p>
+          <h3 class="project-name">Dressed for<br>Real Life</h3>
+          <p class="project-desc">Weekly styling series exploring everyday luxury and wearable art.</p>
+        </div>
+        <div class="project-arrow">&#8599;</div>
+      </a>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <div class="contact-wrap" id="contact">
+    <div class="contact-left reveal">
+      <h2>Let's make<br><em>something</em><br>together.</h2>
+      <p>Open to brand collaborations, editorial commissions, and creative consulting. I reply within 48 hours.</p>
+      <div class="socials">
+        <a href="#" class="social-link"><span></span>Instagram</a>
+        <a href="#" class="social-link"><span></span>TikTok</a>
+        <a href="#" class="social-link"><span></span>Pinterest</a>
+        <a href="#" class="social-link"><span></span>hello@maraleon.com</a>
+      </div>
+    </div>
+    <form class="contact-form reveal" id="contactForm">
+      <div class="form-row">
+        <div class="field">
+          <label>Name</label>
+          <input type="text" name="name" placeholder="Your name" required />
+        </div>
+        <div class="field">
+          <label>Email</label>
+          <input type="email" name="email" placeholder="your@email.com" required />
+        </div>
+      </div>
+      <div class="field full">
+        <label>Enquiry type</label>
+        <select name="type">
+          <option value="" disabled selected>Select a topic</option>
+          <option>Brand Collaboration</option>
+          <option>Editorial / Photoshoot</option>
+          <option>Creative Consulting</option>
+          <option>Speaking / Event</option>
+          <option>Other</option>
+        </select>
+      </div>
+      <div class="field full">
+        <label>Message</label>
+        <textarea name="message" placeholder="Tell me about your project..." required></textarea>
+      </div>
+      <div class="form-submit">
+        <button type="submit">Send Message</button>
+        <p class="form-note">No spam, ever.<br>Your info stays private.</p>
+      </div>
+    </form>
+  </div>
+
+  <footer>
+    <p>&copy; 2025 Mara Leon. All rights reserved.</p>
+    <p>Crafted with intention.</p>
+  </footer>
+
+  <div class="toast" id="toast">Message sent — I'll be in touch soon.</div>
+
+  <script>
+    // Dark mode
+    var toggle = document.getElementById('themeToggle');
+    var root = document.documentElement;
+    var saved = localStorage.getItem('theme');
+    if (saved) root.setAttribute('data-theme', saved);
+    toggle.addEventListener('click', function() {
+      var isDark = root.getAttribute('data-theme') === 'dark';
+      var next = isDark ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+    });
+
+    // Scroll reveal
+    var reveals = document.querySelectorAll('.reveal');
+    var observer = new IntersectionObserver(function(entries) {
+      entries.forEach(function(e) {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          observer.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    reveals.forEach(function(el) { observer.observe(el); });
+
+    // Contact form — posts to Express backend
+    document.getElementById('contactForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      var data = {
+        name: this.name.value,
+        email: this.email.value,
+        type: this.type.value,
+        message: this.message.value
+      };
+      try {
+        var res = await fetch('/contact', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+        if (res.ok) {
+          var toast = document.getElementById('toast');
+          toast.classList.add('show');
+          setTimeout(function() { toast.classList.remove('show'); }, 3500);
+          document.getElementById('contactForm').reset();
+        }
+      } catch(err) {
+        console.error('Form error:', err);
+      }
+    });
+  </script>
+</body>
+</html>
